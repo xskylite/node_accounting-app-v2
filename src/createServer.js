@@ -107,14 +107,18 @@ function createServer() {
     } = req.body;
 
     if (
-      userIdFromBody === undefined ||
-      spentAt === undefined ||
-      title === undefined ||
-      amount === undefined ||
-      category === undefined ||
-      note === undefined
+      typeof userIdFromBody !== 'number' ||
+      typeof spentAt !== 'string' ||
+      typeof title !== 'string' ||
+      title.trim() === '' ||
+      typeof amount !== 'number' ||
+      typeof category !== 'string' ||
+      category.trim() === '' ||
+      typeof note !== 'string'
     ) {
-      return res.status(400).json({ message: 'Missing required fields' });
+      return res
+        .status(400)
+        .json({ message: 'Missing or invalid required fields' });
     }
 
     const user = users.find((u) => u.id === userIdFromBody);
